@@ -8,30 +8,40 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
 
-  // Trier les événements par date décroissante
-  const byDateDesc = data?.focus
-    ? [...data.focus].sort((evtA, evtB) => new Date(evtB.date) - new Date(evtA.date))
+  // 🔹 Vérifie que "focus" contient bien des événements et trie en ORDRE CROISSANT
+  const byDateAsc = data?.focus?.length
+    ? [...data.focus]
+        .filter((evt) => evt?.date) // 🔹 Vérifie que l'événement a bien une date
+        .sort((evtA, evtB) => new Date(evtA.date) - new Date(evtB.date))
     : [];
 
-  // Fonction pour passer à l'image suivante
+  // 🔹 Gestion du changement automatique des slides
   useEffect(() => {
+    if (byDateAsc.length === 0) return undefined; // ✅ Retourne undefined pour éviter "consistent-return"
+
     const timer = setTimeout(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length);
+      setIndex((prevIndex) => (prevIndex + 1) % byDateAsc.length);
     }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [index, byDateDesc.length]);
+    return () => clearTimeout(timer); // ✅ Retourne toujours une fonction de nettoyage
+  }, [index, byDateAsc.length]);
 
-  if (!byDateDesc.length) {
-    return <p>Aucun événement à afficher</p>;
+  // 🔹 Changement de slide au clic sur un bouton radio
+  const handlePaginationClick = (radioIdx) => {
+    setIndex(radioIdx);
+  };
+
+  // 🔹 Affichage d'un message si aucun événement n'est disponible
+  if (byDateAsc.length === 0) {
+    return <p className="no-events">Aucun événement à afficher</p>;
   }
 
   return (
     <div className="SlideCardList">
-      {byDateDesc.map((event, idx) => (
+      {byDateAsc.map((event, idx) => (
         <div
-          key={event.id}
-          className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}
+          key={event.id || `slide-${idx}`} // ✅ Utilise l'ID s'il existe, sinon fallback avec index
+          className={`SlideCard ${index === idx ? "SlideCard--display" : "SlideCard--hide"}`}
         >
           <img src={event.cover} alt={event.title} />
           <div className="SlideCard__descriptionContainer">
@@ -44,16 +54,17 @@ const Slider = () => {
         </div>
       ))}
 
-      {/* Pagination - boutons radio cliquables */}
+      {/* 🔹 Pagination avec clés uniques corrigées */}
       <div className="SlideCard__paginationContainer">
         <div className="SlideCard__pagination">
-          {byDateDesc.map((paginationEvent, radioIdx) => (
+          {byDateAsc.map((paginationEvent, radioIdx) => (
             <input
-              key={`radio-${paginationEvent.id}`}
+              key={`radio-${paginationEvent.id || radioIdx}`} // ✅ Utilise l'ID s'il existe, sinon fallback avec index
               type="radio"
               name="radio-button-slider"
               checked={index === radioIdx}
-              onChange={() => setIndex(radioIdx)} // Permet de changer au clic
+              onChange={() => handlePaginationClick(radioIdx)}
+              className="radio-button"
             />
           ))}
         </div>
@@ -63,6 +74,9 @@ const Slider = () => {
 };
 
 export default Slider;
+
+
+
 
 
 
