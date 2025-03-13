@@ -1,46 +1,61 @@
 import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
-import { getMonth } from "../../helpers/Date";
+import { getMonth } from "../../helpers/Date"; 
 
 import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false); // Add a state for "pause"
 
-  // 🔹 Vérifie que "focus" contient bien des événements et trie en ORDRE CROISSANT
-  const byDateAsc = data?.focus?.length
+  // Check if "focus" get events 
+
+  const byDateDesc = data?.focus?.length
     ? [...data.focus]
-        .filter((evt) => evt?.date) // 🔹 Vérifie que l'événement a bien une date
-        .sort((evtA, evtB) => new Date(evtA.date) - new Date(evtB.date))
+        .filter((evt) => evt?.date) // Check if event get a date
+        .sort((evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)) // last to first
     : [];
 
-  // 🔹 Gestion du changement automatique des slides
+  // Automatic change of slides
+
   useEffect(() => {
-    if (byDateAsc.length === 0) return undefined; // ✅ Retourne undefined pour éviter "consistent-return"
+    if (byDateDesc.length === 0 || isPaused) return undefined; // stop timer if "pause" activ
 
     const timer = setTimeout(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % byDateAsc.length);
+      setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length);
     }, 5000);
 
-    return () => clearTimeout(timer); // ✅ Retourne toujours une fonction de nettoyage
-  }, [index, byDateAsc.length]);
+    return () => clearTimeout(timer); 
+  }, [index, byDateDesc.length, isPaused]); // Add "isPaused" as dependencie
 
-  // 🔹 Changement de slide au clic sur un bouton radio
+  // Display pause with "space" 
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === "Space") {
+        setIsPaused((prevPaused) => !prevPaused); 
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Slides change on click
   const handlePaginationClick = (radioIdx) => {
     setIndex(radioIdx);
   };
 
-  // 🔹 Affichage d'un message si aucun événement n'est disponible
-  if (byDateAsc.length === 0) {
+  if (byDateDesc.length === 0) {
     return <p className="no-events">Aucun événement à afficher</p>;
   }
 
   return (
     <div className="SlideCardList">
-      {byDateAsc.map((event, idx) => (
+      {byDateDesc.map((event, idx) => (
         <div
-          key={event.id || `slide-${idx}`} // ✅ Utilise l'ID s'il existe, sinon fallback avec index
+          key={event.id || `slide-${idx}`} // Use ID if exist, or else fallback with index
           className={`SlideCard ${index === idx ? "SlideCard--display" : "SlideCard--hide"}`}
         >
           <img src={event.cover} alt={event.title} />
@@ -48,7 +63,7 @@ const Slider = () => {
             <div className="SlideCard__description">
               <h3>{event.title}</h3>
               <p>{event.description}</p>
-              <div>{getMonth(new Date(event.date))}</div>
+              <div>{getMonth(new Date(event.date))}</div> 
             </div>
           </div>
         </div>
@@ -57,9 +72,9 @@ const Slider = () => {
       {/* 🔹 Pagination avec clés uniques corrigées */}
       <div className="SlideCard__paginationContainer">
         <div className="SlideCard__pagination">
-          {byDateAsc.map((paginationEvent, radioIdx) => (
+          {byDateDesc.map((paginationEvent, radioIdx) => (
             <input
-              key={`radio-${paginationEvent.id || radioIdx}`} // ✅ Utilise l'ID s'il existe, sinon fallback avec index
+              key={`radio-${paginationEvent.id || radioIdx}`} // Use ID if exist, or else fallback with index
               type="radio"
               name="radio-button-slider"
               checked={index === radioIdx}
@@ -69,11 +84,15 @@ const Slider = () => {
           ))}
         </div>
       </div>
+
+      {isPaused && <div className="slider-paused">⏸️ Pause</div>}
     </div>
   );
 };
 
 export default Slider;
+
+
 
 
 

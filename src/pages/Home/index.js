@@ -10,13 +10,20 @@ import Logo from "../../components/Logo";
 import Icon from "../../components/Icon";
 import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
+import ModalEvent from "../../containers/ModalEvent"; // Import Modal event for the vignet footer
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
   const { data } = useData();
 
   // Get the last event dynamically
-  const lastEvent = data?.events?.length ? data.events[data.events.length - 1] : null;
+
+const lastEvent = data?.events?.length
+? [...data.events]
+    .filter(event => event.date) // Check if event get a date
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0] // Take the most recent event
+: null;
+
 
   return (
     <>
@@ -83,16 +90,23 @@ const Page = () => {
 
           {/* Check before display EventCard */}
           {lastEvent ? (
-            <EventCard
-              imageSrc={lastEvent.cover}
-              title={lastEvent.title} 
-              date={new Date(lastEvent.date)}
-              small
-              label="boom"
-            />
-          ) : (
-            <p>Aucun événement disponible.</p>
-          )}
+  <Modal Content={<ModalEvent event={lastEvent} />}>
+    {({ setIsOpened }) => (
+      <EventCard
+        onClick={() => setIsOpened(true)} // Open modal on click
+        imageSrc={lastEvent.cover}
+        title={lastEvent.title}
+        date={new Date(lastEvent.date)}
+        small
+        label="boom"
+      />
+    )}
+  </Modal>
+) : (
+  <p>Aucun événement disponible.</p>
+)}
+
+
         </div>
         <div className="col contact">
           <h3>Contactez-nous</h3>

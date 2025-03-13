@@ -19,8 +19,15 @@ const EventList = () => {
   // Available categories list
   const typeList = [...new Set(data.events.map((event) => event.type))];
 
-  // Event filtered according to selected categories
-  const filteredEvents = type ? data.events.filter((event) => event.type === type) : data.events;
+  // Get events descr. way
+  const filteredEvents = type
+  ? data.events
+    .filter((event) => event.type === type && event.date)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+  : data.events
+    .filter((event) => event.date)
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); 
+
 
   // Pagination 
   const paginatedEvents = filteredEvents.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
@@ -77,6 +84,13 @@ const EventList = () => {
 };
 
 export default EventList;
+
+
+
+
+
+
+
 
 
 
