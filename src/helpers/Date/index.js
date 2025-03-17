@@ -13,9 +13,15 @@ export const MONTHS = {
   12: "décembre",
 };
 
-export const getMonth = (date) => MONTHS[date.getMonth() +1]; // Adding +1 to match
+export const getMonth = (dateInput) => {
+  // Check if `dateInput` is already Date or string
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
 
+  // If unvailable date
+  if (Number.isNaN(date.getTime())) return "Date invalide";
 
+  return MONTHS[date.getMonth() + 1]; // Return the right month
+};
 
 
 

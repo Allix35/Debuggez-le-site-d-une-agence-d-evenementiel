@@ -21,7 +21,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
-        onSuccess(); // 🔹 Correction : Ajout de l'appel à onSuccess()
+        onSuccess(); // Add onSuccess
       } catch (err) {
         setSending(false);
         onError(err);
@@ -71,4 +71,7 @@ Form.defaultProps = {
 };
 
 export default Form;
+
+
+
 

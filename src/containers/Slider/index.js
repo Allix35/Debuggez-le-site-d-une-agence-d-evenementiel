@@ -69,7 +69,8 @@ const Slider = () => {
         </div>
       ))}
 
-      {/* 🔹 Pagination avec clés uniques corrigées */}
+      {/* Pagination with correct unique keys */}
+      
       <div className="SlideCard__paginationContainer">
         <div className="SlideCard__pagination">
           {byDateDesc.map((paginationEvent, radioIdx) => (
@@ -84,8 +85,6 @@ const Slider = () => {
           ))}
         </div>
       </div>
-
-      {isPaused && <div className="slider-paused">⏸️ Pause</div>}
     </div>
   );
 };
