@@ -98,7 +98,7 @@ const lastEvent = data?.events?.length
         title={lastEvent.title}
         date={new Date(lastEvent.date)}
         small
-        label="boom"
+        label={lastEvent.type} // Display the right category into blue part
       />
     )}
   </Modal>

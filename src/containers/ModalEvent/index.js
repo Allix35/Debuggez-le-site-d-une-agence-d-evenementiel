@@ -40,7 +40,7 @@ const ModalEvent = ({ event }) => {
 // ModalEvent Proptypes
 ModalEvent.propTypes = {
   event: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     type: PropTypes.string.isRequired,
     date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     title: PropTypes.string.isRequired,

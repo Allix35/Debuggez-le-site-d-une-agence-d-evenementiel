@@ -58,7 +58,7 @@ const Slider = () => {
           key={event.id || `slide-${idx}`} // Use ID if exist, or else fallback with index
           className={`SlideCard ${index === idx ? "SlideCard--display" : "SlideCard--hide"}`}
         >
-          <img src={event.cover} alt={event.title} />
+          <img src={event.cover} alt={event.title || "Event image"} />
           <div className="SlideCard__descriptionContainer">
             <div className="SlideCard__description">
               <h3>{event.title}</h3>
@@ -70,7 +70,7 @@ const Slider = () => {
       ))}
 
       {/* Pagination with correct unique keys */}
-      
+
       <div className="SlideCard__paginationContainer">
         <div className="SlideCard__pagination">
           {byDateDesc.map((paginationEvent, radioIdx) => (

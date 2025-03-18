@@ -14,14 +14,18 @@ export const MONTHS = {
 };
 
 export const getMonth = (dateInput) => {
-  // Check if `dateInput` is already Date or string
+  // Check if `dateInput` is null, undefined or a unvalidate value 
+  if (!dateInput) return "Date invalide";
+
   const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
 
-  // If unvailable date
+  // Check if the conversion date failed
   if (Number.isNaN(date.getTime())) return "Date invalide";
 
   return MONTHS[date.getMonth() + 1]; // Return the right month
 };
+
+
 
 
 
