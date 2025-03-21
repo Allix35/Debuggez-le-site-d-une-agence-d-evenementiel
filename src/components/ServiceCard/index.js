@@ -1,15 +1,14 @@
 import PropTypes from "prop-types";
-
 import "./style.scss";
 
-const ServiceCard = ({ imageSrc, imageAlt, children }) => (
-    <div className="ServiceCard">
-      <div className="ServiceCard__imageContainer">
-        <img data-testid="card-image-testid" src={imageSrc} alt={imageAlt} />
-      </div>
-      <div className="ServiceCard__textContainer">{children}</div>
+const ServiceCard = ({ imageSrc, imageAlt = "image", children }) => (
+  <div className="ServiceCard">
+    <div className="ServiceCard__imageContainer">
+      <img data-testid="card-image-testid" src={imageSrc} alt={imageAlt} />
     </div>
-  );
+    <div className="ServiceCard__textContainer">{children}</div>
+  </div>
+);
 
 ServiceCard.propTypes = {
   imageSrc: PropTypes.string.isRequired,
@@ -17,8 +16,7 @@ ServiceCard.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-ServiceCard.defaultProps = {
-  imageAlt: "image"
-}
+// ❌ Suppression de `defaultProps` car la valeur par défaut est maintenant définie directement dans la fonction
 
 export default ServiceCard;
+

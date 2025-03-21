@@ -127,9 +127,8 @@ const Logo = ({ size }) => (
 
 Logo.propTypes = {
   size: PropTypes.string,
-}
-Logo.defaultProps = {
-  size: 'small'
-}
+};
+
+// ❌ Suppression de `defaultProps` car on a défini une valeur par défaut dans la fonction
 
 export default Logo;

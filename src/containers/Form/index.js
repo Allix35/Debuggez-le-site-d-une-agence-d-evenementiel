@@ -4,14 +4,13 @@ import Field, { FIELD_TYPES } from "../../components/Field";
 import Select from "../../components/Select";
 import Button, { BUTTON_TYPES } from "../../components/Button";
 
-// Adding resolve("success") to avoid Promises
-
+// Mock API for testing purpose
 const mockContactApi = () =>
   new Promise((resolve) => {
     setTimeout(() => resolve("success"), 500);
   });
 
-const Form = ({ onSuccess, onError }) => {
+const Form = ({ onSuccess = () => null, onError = () => null }) => {
   const [sending, setSending] = useState(false);
 
   const sendContact = useCallback(
@@ -21,7 +20,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
-        onSuccess(); // Add onSuccess
+        onSuccess();
       } catch (err) {
         setSending(false);
         onError(err);
@@ -65,12 +64,8 @@ Form.propTypes = {
   onSuccess: PropTypes.func,
 };
 
-Form.defaultProps = {
-  onError: () => null,
-  onSuccess: () => null,
-};
-
 export default Form;
+
 
 
 

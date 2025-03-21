@@ -92,12 +92,13 @@ Select.propTypes = {
   type: PropTypes.string,
 };
 
-Select.defaultProps = {
-  onChange: () => null,
-  titleEmpty: false,
-  label: "",
-  type: "normal",
-  name: "select",
+Select.propTypes = {
+  selection: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+  titleEmpty: PropTypes.bool,
+  label: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default Select;
