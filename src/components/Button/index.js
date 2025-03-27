@@ -63,7 +63,6 @@ Button.propTypes = {
   children: PropTypes.node,
 };
 
-// ❌ Plus besoin de `defaultProps`, car les valeurs par défaut sont déjà définies dans la fonction
 
 export default Button;
 

@@ -129,6 +129,5 @@ Logo.propTypes = {
   size: PropTypes.string,
 };
 
-// ❌ Suppression de `defaultProps` car on a défini une valeur par défaut dans la fonction
 
 export default Logo;

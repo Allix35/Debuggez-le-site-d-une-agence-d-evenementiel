@@ -16,7 +16,6 @@ ServiceCard.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// ❌ Suppression de `defaultProps` car la valeur par défaut est maintenant définie directement dans la fonction
 
 export default ServiceCard;
 

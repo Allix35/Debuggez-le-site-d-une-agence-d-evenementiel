@@ -8,13 +8,14 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
 
+  // Valide events filtered from last one to old one
   const byDateDesc = data?.focus?.length
     ? [...data.focus]
-        .filter((evt) => evt?.date) // Check if event get a date
-        .sort((evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)) // New date to old date
+        .filter((evt) => evt?.date) // Checking if each events get a date
+        .sort((evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)) // Descending sort
     : [];
 
-  // Autiomatic slides change
+  // Automatic slide every 5 sec
   useEffect(() => {
     if (byDateDesc.length === 0) return undefined;
 
@@ -25,11 +26,12 @@ const Slider = () => {
     return () => clearTimeout(timer);
   }, [index, byDateDesc.length]);
 
-  // Slide manual change with pagination button
+  // Manual events change with pagination button
   const handlePaginationClick = (radioIdx) => {
     setIndex(radioIdx);
   };
 
+  // Message if no events
   if (byDateDesc.length === 0) {
     return <p className="no-events">Aucun événement à afficher</p>;
   }
@@ -38,6 +40,7 @@ const Slider = () => {
     <div className="SlideCardList">
       {byDateDesc.map((event, idx) => (
         <div
+          // Checking that each slides get a unique key with fallback `slide-idx`
           key={event.id || `slide-${idx}`}
           className={`SlideCard ${index === idx ? "SlideCard--display" : "SlideCard--hide"}`}
         >
@@ -72,6 +75,7 @@ const Slider = () => {
 };
 
 export default Slider;
+
 
 
 

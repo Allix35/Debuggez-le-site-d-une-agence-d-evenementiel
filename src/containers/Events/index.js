@@ -7,47 +7,49 @@ import ModalEvent from "../ModalEvent";
 
 import "./style.css";
 
+// Number of event per page
 const PER_PAGE = 9;
 
 const EventList = () => {
-  const { data, error } = useData();
-  const [type, setType] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { data, error } = useData(); // Getting data
+  const [type, setType] = useState(null); // Events type selected
+  const [currentPage, setCurrentPage] = useState(1); // Actual page
 
   if (!data || error) return <div>{error ? "Une erreur est survenue" : "Chargement en cours..."}</div>;
 
-  // Available categories list
+  // Filters list availables
   const typeList = [...new Set(data.events.map((event) => event.type))];
 
-  // Get events descr. way
+  // Events filtered in function of categorie selected
   const filteredEvents = type
-  ? data.events
-    .filter((event) => event.type === type && event.date)
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-  : data.events
-    .filter((event) => event.date)
-    .sort((a, b) => new Date(b.date) - new Date(a.date)); 
+    ? data.events
+        .filter((event) => event.type === type && event.date) // If a category is selected
+        .sort((a, b) => new Date(b.date) - new Date(a.date)) // Event are displaying from last to old date
+    : data.events
+        .filter((event) => event.date) // If no categories are selected
+        .sort((a, b) => new Date(b.date) - new Date(a.date)); // Event are displaying from last to old date
 
-
-  // Pagination 
-  const paginatedEvents = filteredEvents.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+  // Paginated Events
+  const paginatedEvents = filteredEvents.slice(
+    (currentPage - 1) * PER_PAGE,
+    currentPage * PER_PAGE
+  );
   const totalPages = Math.ceil(filteredEvents.length / PER_PAGE);
 
-  // ✅ Function to change category
+  // Filters categories update
   const changeType = (selectedType) => {
-    
     setType(selectedType);
-    setCurrentPage(1); // Return to first page
+    setCurrentPage(1); // Displaying page 1 when categories change
   };
 
   return (
     <>
       <h3 className="SelectTitle">Catégories</h3>
-      <Select
-        selection={typeList}
-        onChange={changeType} // Filter apply
-      />
 
+      {/* Select component to change category */}
+      <Select selection={typeList} onChange={changeType} />
+
+      {/* Events displaying */}
       <div id="events" className="ListContainer">
         {paginatedEvents.length > 0 ? (
           paginatedEvents.map((event) => (
@@ -68,8 +70,7 @@ const EventList = () => {
         )}
       </div>
 
-      {/* Display pagination */}
-      
+      {/* Pagination if several pages */}
       {totalPages > 1 && (
         <div className="Pagination">
           {Array.from({ length: totalPages }, (_, index) => (
@@ -84,6 +85,7 @@ const EventList = () => {
 };
 
 export default EventList;
+
 
 
 
