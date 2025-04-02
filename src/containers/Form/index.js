@@ -22,18 +22,18 @@ const Form = ({ onSuccess = () => null, onError = () => null }) => {
 
       try {
         await mockContactApi(); // API call
-        setSending(false);      // End of loading
-        onSuccess();            // Call onSuccess function
+        setSending(false); // End of loading
+        onSuccess(); // Call onSuccess function
       } catch (err) {
-        setSending(false);      // End of loading
-        onError(err);           // Call error function
+        setSending(false); // End of loading
+        onError(err); // Call error function
       }
     },
     [onSuccess, onError] // Functions dependencies
   );
 
   return (
-    <form onSubmit={sendContact}>
+    <form onSubmit={sendContact}> {/* Form submitted */}
       <div className="row">
         <div className="col">
           {/* Field */}
@@ -68,8 +68,8 @@ const Form = ({ onSuccess = () => null, onError = () => null }) => {
 };
 
 Form.propTypes = {
-  onError: PropTypes.func,     // Function call if error
-  onSuccess: PropTypes.func,   // Function call if succed
+  onError: PropTypes.func, // Function call if error
+  onSuccess: PropTypes.func, // Function call if succed
 };
 
 export default Form;

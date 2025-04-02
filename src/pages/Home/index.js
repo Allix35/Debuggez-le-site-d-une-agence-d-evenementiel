@@ -79,7 +79,7 @@ const lastEvent = data?.events?.length
             }
           >
             {({ setIsOpened }) => (
-              <Form onSuccess={() => setIsOpened(true)} onError={() => null} />
+              <Form onSuccess={() => setIsOpened(true)} onError={() => null} /> // onSuccess  called
             )}
           </Modal>
         </div>

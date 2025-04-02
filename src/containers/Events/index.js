@@ -12,22 +12,22 @@ const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData(); // Getting data
-  const [type, setType] = useState(null); // Events type selected
+  const [type, setType] = useState(null); // Get the event type
   const [currentPage, setCurrentPage] = useState(1); // Actual page
 
   if (!data || error) return <div>{error ? "Une erreur est survenue" : "Chargement en cours..."}</div>;
 
   // Filters list availables
-  const typeList = [...new Set(data.events.map((event) => event.type))];
+  const typeList = [...new Set(data.events.map((event) => event.type))]; // Get event type from data and using Set to delete duplicate
 
   // Events filtered in function of categorie selected
   const filteredEvents = type
     ? data.events
-        .filter((event) => event.type === type && event.date) // If a category is selected
-        .sort((a, b) => new Date(b.date) - new Date(a.date)) // Event are displaying from last to old date
+        .filter((event) => event.type === type && event.date) // Category is selected
+        .sort((a, b) => new Date(b.date) - new Date(a.date)) 
     : data.events
-        .filter((event) => event.date) // If no categories are selected
-        .sort((a, b) => new Date(b.date) - new Date(a.date)); // Event are displaying from last to old date
+        .filter((event) => event.date) // No categories are selected
+        .sort((a, b) => new Date(b.date) - new Date(a.date)); 
 
   // Paginated Events
   const paginatedEvents = filteredEvents.slice(

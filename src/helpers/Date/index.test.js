@@ -15,15 +15,15 @@ describe("Date helper", () => {
             expect(getMonth("2022-07-08")).toBe("juillet");
         });
 
-        // Test 3 : If invalide date return "Date invalide"
-        it("should return 'Date invalide' for an invalid date", () => {
-            expect(getMonth("invalid-date")).toBe("Date invalide");
-        });
-
         // Test 4 : Checking if object Date functionning
         it("should return 'mars' for a Date object (March 15, 2023)", () => {
             expect(getMonth(new Date(2023, 2, 15))).toBe("mars");
             // Month 2 = mars 
+        });
+
+        // Test 3 : If invalide date return "Date invalide"
+        it("should return 'Date invalide' for an invalid date", () => {
+            expect(getMonth("invalid-date")).toBe("Date invalide");
         });
 
         // Test 5 : Empty string return "Date invalide"

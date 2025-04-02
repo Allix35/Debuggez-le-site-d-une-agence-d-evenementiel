@@ -20,11 +20,11 @@ const Slider = () => {
     if (byDateDesc.length === 0) return undefined;
 
     const timer = setTimeout(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length);
+      setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length); // Using modulo to come back to the first slide after the last one
     }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [index, byDateDesc.length]);
+    return () => clearTimeout(timer); // Clear setTimeout
+  }, [index, byDateDesc.length]); // Timer start when index or data change
 
   // Manual events change with pagination button
   const handlePaginationClick = (radioIdx) => {
